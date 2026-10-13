@@ -28,7 +28,7 @@ export default function App() {
       email: '',
       roomType: 'Standard',
       checkInDate: today,
-      checkOutDate: new Date(today.getTime() + 86400000), 
+      checkOutDate: null, 
     },
   });
 
@@ -43,8 +43,8 @@ export default function App() {
       userName: data.userName,
       email: data.email,
       roomType: data.roomType,
-      checkInDate: data.checkInDate.toLocaleDateString(),
-      checkOutDate: data.checkOutDate.toLocaleDateString(),
+      checkInDate: data.checkInDate ? data.checkInDate.toLocaleDateString() : '',
+      checkOutDate: data.checkOutDate ? data.checkOutDate.toLocaleDateString() : '',
     };
     sendData(formattedData);
   };
@@ -54,7 +54,7 @@ export default function App() {
       <View>
         <Text style={styles.formHeader}>Booking form</Text>
 
-        {}
+        {/* Name */}
         <Text style={styles.formTitle}>Name</Text>
         <Controller
           control={control}
@@ -87,7 +87,7 @@ export default function App() {
           </Text>
         )}
 
-        {}
+        {/* Email */}
         <Text style={styles.formTitle}>email</Text>
         <Controller
           control={control}
@@ -120,18 +120,20 @@ export default function App() {
           </Text>
         )}
 
-        {}
+        {/* Check-In Date */}
         <Text style={styles.formTitle}>Check-In Date</Text>
         <TouchableOpacity
           style={styles.input}
           onPress={() => setShowCheckInPicker(true)}
         >
-          <Text>{checkInDate.toLocaleDateString()}</Text>
+          <Text>
+            {checkInDate ? checkInDate.toLocaleDateString() : 'Select Date'}
+          </Text>
         </TouchableOpacity>
         {showCheckInPicker && (
           <DateTimePicker
             testID="date-time-picker"
-            value={checkInDate}
+            value={checkInDate || today}
             mode="date"
             display="default"
             onChange={(event, selectedDate) => {
@@ -143,14 +145,14 @@ export default function App() {
           />
         )}
 
-        {}
+        {/* Check-Out Date */}
         <Text style={styles.formTitle}>Check-Out Date</Text>
         <TouchableOpacity
           style={styles.input}
           onPress={() => setShowCheckOutPicker(true)}
         >
           <Text>
-            {checkOutDate ? checkOutDate.toLocaleDateString() : 'Select date'}
+            {checkOutDate ? checkOutDate.toLocaleDateString() : 'Select Date'}
           </Text>
         </TouchableOpacity>
         {showCheckOutPicker && (
@@ -174,7 +176,7 @@ export default function App() {
             required: 'Check-Out Date is required',
             validate: (value) =>
               !value ||
-              value > checkInDate ||
+              (checkInDate && value > checkInDate) ||
               'The Check-Out Date must be later than the Check-In Date',
           }}
           render={() => <View />}
@@ -188,7 +190,7 @@ export default function App() {
           </Text>
         )}
 
-        {}
+        {/* Room Type Picker */}
         <Text style={styles.formTitle}>Choose the room type:</Text>
         <Controller
           control={control}
@@ -207,7 +209,7 @@ export default function App() {
           )}
         />
 
-        {}
+        {/* Submit Button */}
         <TouchableOpacity
           style={{ ...styles.button, marginTop: 50 }}
           onPress={handleSubmit(onSubmit)}
