@@ -27,7 +27,7 @@ export default function App() {
     defaultValues: {
       userName: '',
       email: '',
-      roomType: 'luxury', 
+      roomType: 'luxury',
       checkInDate: today,
       checkOutDate: null,
     },
