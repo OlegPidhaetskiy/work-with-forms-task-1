@@ -11,7 +11,7 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { sendData } from './services/sendDate'; 
+import { sendData } from './services/sendDate';
 
 export default function App() {
   const today = new Date();
@@ -35,8 +35,8 @@ export default function App() {
   const checkInDate = watch('checkInDate');
   const checkOutDate = watch('checkOutDate');
 
-  const [showCheckInPicker, setShowCheckInPicker] = useState(false);
-  const [showCheckOutPicker, setShowCheckOutPicker] = useState(false);
+
+  const [activePicker, setActivePicker] = useState(null);
 
   const onSubmit = (data) => {
     const formattedData = {
@@ -124,47 +124,41 @@ export default function App() {
         <Text style={styles.formTitle}>Check-In Date</Text>
         <TouchableOpacity
           style={styles.input}
-          onPress={() => setShowCheckInPicker(true)}
+          onPress={() => setActivePicker('checkIn')}
         >
           <Text>
             {checkInDate ? checkInDate.toLocaleDateString() : 'Select Date'}
           </Text>
         </TouchableOpacity>
-        {showCheckInPicker && (
-          <DateTimePicker
-            testID="date-time-picker"
-            value={checkInDate || today}
-            mode="date"
-            display="default"
-            onChange={(event, selectedDate) => {
-              setShowCheckInPicker(Platform.OS === 'ios');
-              if (selectedDate) {
-                setValue('checkInDate', selectedDate, { shouldValidate: true });
-              }
-            }}
-          />
-        )}
 
         {/* Check-Out Date */}
         <Text style={styles.formTitle}>Check-Out Date</Text>
         <TouchableOpacity
           style={styles.input}
-          onPress={() => setShowCheckOutPicker(true)}
+          onPress={() => setActivePicker('checkOut')}
         >
           <Text>
             {checkOutDate ? checkOutDate.toLocaleDateString() : 'Select Date'}
           </Text>
         </TouchableOpacity>
-        {showCheckOutPicker && (
+
+        {}
+        {activePicker && (
           <DateTimePicker
             testID="date-time-picker"
-            value={checkOutDate || today}
+            value={activePicker === 'checkIn' ? (checkInDate || today) : (checkOutDate || today)}
             mode="date"
             display="default"
             onChange={(event, selectedDate) => {
-              setShowCheckOutPicker(Platform.OS === 'ios');
+              if (Platform.OS !== 'ios') {
+                setActivePicker(null);
+              }
               if (selectedDate) {
-                setValue('checkOutDate', selectedDate, { shouldValidate: true });
+                if (activePicker === 'checkIn') {
+                  setValue('checkInDate', selectedDate, { shouldValidate: true });
+                } else if (activePicker === 'checkOut') {
+                  setValue('checkOutDate', selectedDate, { shouldValidate: true });
+                }
               }
             }}
           />
