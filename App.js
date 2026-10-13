@@ -27,7 +27,7 @@ export default function App() {
     defaultValues: {
       userName: '',
       email: '',
-      roomType: 'Standard',
+      roomType: 'luxury', 
       checkInDate: today,
       checkOutDate: null,
     },
@@ -194,8 +194,8 @@ export default function App() {
                 onValueChange={(itemValue) => onChange(itemValue)}
               >
                 <Picker.Item label="Standard" value="Standard" />
-                <Picker.Item label="Luxury" value="Luxury" />
-                <Picker.Item label="Family" value="Family" />
+                <Picker.Item label="Luxury" value="luxury" />
+                <Picker.Item label="Family" value="family" />
               </Picker>
             </View>
           )}
