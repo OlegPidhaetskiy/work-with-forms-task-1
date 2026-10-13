@@ -21,12 +21,13 @@ export default function App() {
     handleSubmit,
     setValue,
     watch,
+    trigger,
     formState: { errors },
   } = useForm({
     defaultValues: {
       userName: '',
       email: '',
-      roomType: 'Standard',
+      roomType: 'luxury',
       checkInDate: today,
       checkOutDate: null,
     },
@@ -35,18 +36,10 @@ export default function App() {
   const checkInDate = watch('checkInDate');
   const checkOutDate = watch('checkOutDate');
 
-
   const [activePicker, setActivePicker] = useState(null);
 
   const onSubmit = (data) => {
-    const formattedData = {
-      userName: data.userName,
-      email: data.email,
-      roomType: data.roomType,
-      checkInDate: data.checkInDate ? data.checkInDate.toLocaleDateString() : '',
-      checkOutDate: data.checkOutDate ? data.checkOutDate.toLocaleDateString() : '',
-    };
-    sendData(formattedData);
+    sendData(data);
   };
 
   return (
@@ -142,11 +135,14 @@ export default function App() {
           </Text>
         </TouchableOpacity>
 
-        {}
         {activePicker && (
           <DateTimePicker
             testID="date-time-picker"
-            value={activePicker === 'checkIn' ? (checkInDate || today) : (checkOutDate || today)}
+            value={
+              activePicker === 'checkIn'
+                ? checkInDate || today
+                : checkOutDate || today
+            }
             mode="date"
             display="default"
             onChange={(event, selectedDate) => {
@@ -156,6 +152,7 @@ export default function App() {
               if (selectedDate) {
                 if (activePicker === 'checkIn') {
                   setValue('checkInDate', selectedDate, { shouldValidate: true });
+                  trigger('checkOutDate'); 
                 } else if (activePicker === 'checkOut') {
                   setValue('checkOutDate', selectedDate, { shouldValidate: true });
                 }
@@ -196,9 +193,9 @@ export default function App() {
                 selectedValue={value}
                 onValueChange={(itemValue) => onChange(itemValue)}
               >
-                <Picker.Item label="Standard" value="Standard" />
-                <Picker.Item label="Luxury" value="Luxury" />
-                <Picker.Item label="Family" value="Family" />
+                <Picker.Item label="Standard" value="standard" />
+                <Picker.Item label="Luxury" value="luxury" />
+                <Picker.Item label="Family" value="family" />
               </Picker>
             </View>
           )}
