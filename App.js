@@ -11,7 +11,7 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { sendData } from './services/sendData';
+import { sendData } from './services/sendDate'; 
 
 export default function App() {
   const today = new Date();
@@ -28,7 +28,7 @@ export default function App() {
       email: '',
       roomType: 'Standard',
       checkInDate: today,
-      checkOutDate: null, 
+      checkOutDate: null,
     },
   });
 
@@ -169,6 +169,7 @@ export default function App() {
             }}
           />
         )}
+
         <Controller
           control={control}
           name="checkOutDate"
