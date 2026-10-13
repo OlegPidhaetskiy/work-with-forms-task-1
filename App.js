@@ -27,7 +27,7 @@ export default function App() {
     defaultValues: {
       userName: '',
       email: '',
-      roomType: 'luxury',
+      roomType: 'Standard',
       checkInDate: today,
       checkOutDate: null,
     },
@@ -152,7 +152,7 @@ export default function App() {
               if (selectedDate) {
                 if (activePicker === 'checkIn') {
                   setValue('checkInDate', selectedDate, { shouldValidate: true });
-                  trigger('checkOutDate'); 
+                  trigger('checkOutDate');
                 } else if (activePicker === 'checkOut') {
                   setValue('checkOutDate', selectedDate, { shouldValidate: true });
                 }
@@ -193,9 +193,9 @@ export default function App() {
                 selectedValue={value}
                 onValueChange={(itemValue) => onChange(itemValue)}
               >
-                <Picker.Item label="Standard" value="standard" />
-                <Picker.Item label="Luxury" value="luxury" />
-                <Picker.Item label="Family" value="family" />
+                <Picker.Item label="Standard" value="Standard" />
+                <Picker.Item label="Luxury" value="Luxury" />
+                <Picker.Item label="Family" value="Family" />
               </Picker>
             </View>
           )}
