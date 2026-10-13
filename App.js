@@ -16,7 +16,6 @@ import { sendData } from './services/sendDate';
 export default function App() {
   const today = new Date();
 
-  
   const {
     control,
     handleSubmit,
@@ -28,7 +27,7 @@ export default function App() {
     defaultValues: {
       userName: '',
       email: '',
-      roomType: 'luxury',
+      roomType: 'Standard',
       checkInDate: today,
       checkOutDate: null,
     },
@@ -40,7 +39,11 @@ export default function App() {
   const [activePicker, setActivePicker] = useState(null);
 
   const onSubmit = (data) => {
-    sendData(data);
+    const formattedData = {
+      ...data,
+      roomType: data.roomType ? data.roomType.toLowerCase() : 'standard',
+    };
+    sendData(formattedData);
   };
 
   return (
@@ -195,8 +198,8 @@ export default function App() {
                 onValueChange={(itemValue) => onChange(itemValue)}
               >
                 <Picker.Item label="Standard" value="Standard" />
-                <Picker.Item label="Luxury" value="luxury" />
-                <Picker.Item label="Family" value="family" />
+                <Picker.Item label="Luxury" value="Luxury" />
+                <Picker.Item label="Family" value="Family" />
               </Picker>
             </View>
           )}
